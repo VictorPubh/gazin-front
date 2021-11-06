@@ -1,16 +1,19 @@
 <div class="container">
-    <div class="flex">
-        <a class="a-signup mb-4" routerLink="/login">
-            <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
-        </a>
+  <div class="flex">
+    <a class="a-signup mb-4" routerLink="/login">
+      <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
+    </a>
 
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Criar Conta</h5>
-                    <form [formGroup]="personForm">
-                        <div class="form-group">
-                            <label for="inputName" [ngClass]="{ required: checkField(personForm.get('name')) }">Nome <b>*</b></label
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-2">
+        <div class="card-body">
+          <h5 class="card-title text-center">Criar Conta</h5>
+          <form [formGroup]="personForm">
+            <div class="form-group">
+              <label
+                for="inputName"
+                [ngClass]="{ required: checkField(personForm.get('name')) }"
+                >Nome <b>*</b></label
               >
               <input
                 type="text"
