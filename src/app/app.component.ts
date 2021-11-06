@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
-import { Subscription, BehaviorSubject } from 'rxjs';
-import { Router } from '@angular/router';
-import { DOCUMENT } from '@angular/common';
+import { Component, OnInit, OnDestroy, Inject } from "@angular/core";
+import { Subscription, BehaviorSubject } from "rxjs";
+import { Router } from "@angular/router";
+import { DOCUMENT } from "@angular/common";
 
-import { AuthService } from './_auth/services/auth.service';
-import { ItemsService } from './items/_services/items.service';
+import { AuthService } from "./_auth/services/auth.service";
+import { PeoplesService } from "./peoples/_services/peoples.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit, OnDestroy {
-
   loggedIn$: BehaviorSubject<boolean>;
   private isLoggedIn_subscription: Subscription;
 
@@ -20,14 +19,13 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     @Inject(DOCUMENT) private document: any,
-    private itemsService: ItemsService,
-  ) { }
+    private peoplesService: PeoplesService
+  ) {}
 
   ngOnInit() {
+    this.loggedIn$ = this.authService.isLoggedIn;
 
-    this.loggedIn$  =  this.authService.isLoggedIn;
-
-    this.isLoggedIn_subscription  = this.authService.isLoggedIn.subscribe(
+    this.isLoggedIn_subscription = this.authService.isLoggedIn.subscribe(
       (status) => {
         this.setBodyClassName(status);
 
@@ -39,39 +37,38 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
 
-    // check and validate token
+    // Check and validate token
     if (this.authService.hasToken()) {
-      this.authService.validateTokenOnServer().subscribe(
-        (result) => {
-          if (!result) {
-            this.logout();
-          }
+      this.authService.validateTokenOnServer().subscribe((result) => {
+        if (!result) {
+          this.logout();
         }
-      );
+      });
     }
-
   }
 
   ngOnDestroy() {
-    if (this.isLoggedIn_subscription)  { this.isLoggedIn_subscription.unsubscribe(); }
+    if (this.isLoggedIn_subscription) {
+      this.isLoggedIn_subscription.unsubscribe();
+    }
   }
 
   private setBodyClassName(status: boolean) {
-    this.document.body.className = status ? '' : 'publicPage';
+    this.document.body.className = status ? "" : "publicPage";
   }
 
   private handleLoginError() {
-    this.router.navigate(['/login']);
+    this.router.navigate(["/login"]);
   }
 
   private handleLoginSuccess() {
     // console.log('** handleLoginSuccess **');
-    this.itemsService.clear();
-    this.itemsService.fetch().subscribe();
+    this.peoplesService.clear();
+    this.peoplesService.fetch().subscribe();
   }
 
   private logout() {
     this.authService.logout();
-    this.itemsService.clear();
+    this.peoplesService.clear();
   }
 }

@@ -1,0 +1,17 @@
+<div class="container">
+    <h1 class="my-4">Pessoas</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <p *ngIf="!hasItems(peoples$ | async)" class="alert alert-danger" role="alert">
+                <Strong>Nada encontrado.</Strong><br /> Tente criar um novo usuário.
+            </p>
+
+            <app-peoples-list></app-peoples-list>
+        </div>
+
+        <div class="col-md-4">
+            <app-person-add-edit></app-person-add-edit>
+        </div>
+    </div>
+</div>

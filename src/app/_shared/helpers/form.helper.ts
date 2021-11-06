@@ -1,5 +1,5 @@
-import { FormControl, AbstractControl } from '@angular/forms';
+import { FormControl, AbstractControl } from "@angular/forms";
 
 export function CheckRequiredField(field: AbstractControl): boolean {
-    return (!field.valid && (field.dirty || field.touched));
+  return !field.valid && (field.dirty || field.touched);
 }

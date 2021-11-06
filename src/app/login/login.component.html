@@ -1,30 +1,64 @@
-<div class="container" >
-  <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="card card-signin my-5">
-        <div class="card-body">
-          <h5 class="card-title text-center">Sign In</h5>
-          <form class="form-signin" [formGroup]="loginForm">
-
-            <div class="form-group">
-              <label for="inputEmail" [ngClass]="{'required': checkField(loginForm.get('username')) }">Email address *</label>
-              <input type="email" [ngClass]="{'required': checkField(loginForm.get('username')) }" class="form-control rounded" id="inputEmail" aria-describedby="emailHelp" placeholder="Enter email" formControlName="username">
+<div class="container">
+    <div class="flex">
+        <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Faça Login</h5>
+                    <form class="form-signin" [formGroup]="loginForm">
+                        <div class="form-group">
+                            <label for="inputEmail" [ngClass]="{ required: checkField(loginForm.get('email')) }">Email <b>(Required)</b></label
+              >
+              <input
+                type="email"
+                [ngClass]="{ required: checkField(loginForm.get('email')) }"
+                class="form-control rounded"
+                id="inputEmail"
+                aria-describedby="emailHelp"
+                placeholder="Digite seu e-mail"
+                formControlName="email"
+              />
             </div>
 
             <div class="form-group">
-                <label for="inputPassword" [ngClass]="{'required': checkField(loginForm.get('password')) }">Password *</label>
-                <input type="password" class="form-control rounded" [ngClass]="{'required': checkField(loginForm.get('password')) }" id="inputPassword" aria-describedby="passwordHelp" placeholder="Enter password" formControlName="password">
+              <label
+                for="inputPassword"
+                [ngClass]="{ required: checkField(loginForm.get('password')) }"
+                >Senha <b>(Required)</b></label
+              >
+              <input
+                type="password"
+                class="form-control rounded"
+                [ngClass]="{ required: checkField(loginForm.get('password')) }"
+                id="inputPassword"
+                aria-describedby="passwordHelp"
+                placeholder="Digite sua senha"
+                formControlName="password"
+              />
             </div>
 
             <p class="alert alert-danger" role="alert" *ngIf="error">
-              <strong>There was an error!</strong><br>Please check your username/password and try again.
+              <strong>Ocorreu um erro!</strong>
+              <br />
+              Por favor verifique seu e-mail e senha de acesso e tente
+              novamente.
             </p>
 
-            <button id="submitButton" class="btn btn-lg btn-primary btn-block text-uppercase" type="button" [disabled]="!loginForm.valid || processing" (click)="onSubmitButtonClicked()">{{ processing ? 'Validating...' : 'Sign in' }}</button>
-
+            <button
+              id="submitButton"
+              class="btn btn-lg btn-primary btn-block text-uppercase"
+              type="button"
+              [disabled]="!loginForm.valid || processing"
+              (click)="onSubmitButtonClicked()"
+            >
+              {{ processing ? "Validando..." : "Entrar" }}
+            </button>
           </form>
         </div>
       </div>
+      <a class="a-signup mb-4" routerLink="/signup">
+        Ou crie uma nova conta..
+      </a>
     </div>
   </div>
 </div>

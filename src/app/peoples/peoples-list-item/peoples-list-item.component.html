@@ -1,0 +1,33 @@
+<div class="list-group-person" style="margin-bottom: 10px" *ngIf="person">
+    <div class="row">
+        <div class="col-md-6">
+            <p><b>Nome: </b>{{ person.name }}</p>
+            <p><b>Idade: </b>{{ person.age }} Anos</p>
+            <p><b>E-mail: </b>{{ person.email }}</p>
+        </div>
+        <div class="col-md-6">
+            <p><b>Profissão: </b>{{ person.profession }}</p>
+            <p><b>Sexo: </b>{{ personSex }}</p>
+            <p><b>Data de Nascimento: </b>{{ birthday }}</p>
+        </div>
+    </div>
+
+    <div class="row" style="padding-top: 10">
+        <div class="col-md-6 mt-2">
+            <button class="btn btn-primary btn-block" type="button" (click)="edit()">
+        <fa-icon [icon]="faEdit"></fa-icon>
+        Editar
+      </button>
+        </div>
+        <div class="col-md-6 mt-2">
+            <button class="btn btn-danger btn-block" type="button" (click)="delete()">
+        <fa-icon [icon]="faTrash"></fa-icon>
+        Excluir
+      </button>
+        </div>
+    </div>
+</div>
+<div class="createdAt">
+    Criado em {{ createdAt }}
+    <hr />
+</div>

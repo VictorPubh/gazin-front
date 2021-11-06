@@ -1,0 +1,165 @@
+<div class="container">
+    <div class="flex">
+        <a class="a-signup mb-4" routerLink="/login">
+            <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
+        </a>
+
+        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div class="card card-signin my-5">
+                <div class="card-body">
+                    <h5 class="card-title text-center">Criar Conta</h5>
+                    <form [formGroup]="personForm">
+                        <div class="form-group">
+                            <label for="inputName" [ngClass]="{ required: checkField(personForm.get('name')) }">Nome <b>*</b></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="inputName"
+                placeholder="Nome"
+                formControlName="name"
+                [ngClass]="{ required: checkField(personForm.get('name')) }"
+              />
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputEmail"
+                [ngClass]="{ required: checkField(personForm.get('email')) }"
+                >E-mail <b>*</b></label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="inputEmail"
+                placeholder="E-mail"
+                formControlName="email"
+                [ngClass]="{ required: checkField(personForm.get('email')) }"
+              />
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputPassword"
+                [ngClass]="{
+                  required: checkField(personForm.get('password'))
+                }"
+                >Senha <b>*</b></label
+              >
+              <input
+                type="password"
+                class="form-control"
+                id="inputPassword"
+                placeholder="Senha"
+                formControlName="password"
+                [ngClass]="{
+                  required: checkField(personForm.get('password'))
+                }"
+              />
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputProfession"
+                [ngClass]="{
+                  required: checkField(personForm.get('profession'))
+                }"
+                >Profissão <b>*</b></label
+              >
+              <select
+                class="form-control"
+                id="inputProfession"
+                formControlName="profession"
+                [ngClass]="{
+                  required: checkField(personForm.get('profession'))
+                }"
+              >
+                <option value="Developer" selected>Developer</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputSex"
+                [ngClass]="{ required: checkField(personForm.get('sex')) }"
+                >Sexo <b>*</b></label
+              >
+              <select
+                class="form-control"
+                id="inputSex"
+                formControlName="sex"
+                [ngClass]="{ required: checkField(personForm.get('sex')) }"
+              >
+                <option value="female">Mulher</option>
+                <option value="male">Homem</option>
+                <option value="undefined">Não informar</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputBirthday"
+                [ngClass]="{
+                  required: checkField(personForm.get('birthday'))
+                }"
+                >Nascimento <b>*</b></label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="inputBirthday"
+                placeholder="Data de Nascimento"
+                formControlName="birthday"
+                [ngClass]="{
+                  required: checkField(personForm.get('birthday'))
+                }"
+              />
+            </div>
+
+            <div class="form-group">
+              <label
+                for="inputCompany"
+                [ngClass]="{
+                  required: checkField(personForm.get('company'))
+                }"
+                >Empresa <b>*</b></label
+              >
+              <select
+                class="form-control"
+                id="inputCompany"
+                formControlName="company"
+                [ngClass]="{
+                  required: checkField(personForm.get('company'))
+                }"
+              >
+                <option
+                  *ngFor="let company of companies"
+                  value="{{ company.id }}"
+                  selected
+                >
+                  {{ company.name }}
+                </option>
+              </select>
+            </div>
+
+            <p class="alert alert-warning" role="alert" **ngIf="isProcessing">
+              Aguarde um instante..
+            </p>
+
+            <button
+              type="button"
+              class="btn btn-primary btn-block submitbutton"
+              (click)="onSubmit($event)"
+              [disabled]="!personForm.valid || isProcessing"
+            >
+              Criar Conta
+            </button>
+          </form>
+        </div>
+      </div>
+      <a class="a-signup mb-4" routerLink="/login">
+        Já possui uma conta? Clique aqui.
+      </a>
+    </div>
+  </div>
+</div>

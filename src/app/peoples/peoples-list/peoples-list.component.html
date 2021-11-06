@@ -1,0 +1,3 @@
+<ul class="list-group" *ngIf="peoples$ | async as peoples">
+    <app-peoples-list-item *ngFor="let person of peoples" [person]="person"></app-peoples-list-item>
+</ul>

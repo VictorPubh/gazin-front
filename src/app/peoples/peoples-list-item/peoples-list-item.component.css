@@ -1,0 +1,13 @@
+.ng-fa-icon {
+  margin-right: 0.45rem;
+}
+
+.createdAt {
+  font-size: 13px;
+  text-align: right;
+  margin: 0 10px;
+}
+
+.col-md-6 p {
+  margin: 2px;
+}

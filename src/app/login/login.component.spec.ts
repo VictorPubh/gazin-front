@@ -85,7 +85,7 @@ describe('LoginComponent', () => {
   //   // const t  = component.error && component.processing ? true : false;
   //   // console.log(t);
 
-  //   const req = httpMock.expectOne('/api/auth/login');
+  //   const req = httpMock.expectOne('/auth/login');
   //   expect(req.request.method).toBe('POST');
   //   req.flush(loginResponse);
 
