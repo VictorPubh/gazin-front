@@ -21,6 +21,7 @@ import { PeoplesModule } from "./peoples/person.module";
 import { PeoplesService } from "./peoples/_services/peoples.service";
 import { AuthService } from "./_auth/services/auth.service";
 import { SignUpComponent } from "./sign-up/sign-up.component";
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SignUpComponent } from "./sign-up/sign-up.component";
     FormsModule,
     PeoplesModule,
     FontAwesomeModule,
+    NgMultiSelectDropDownModule,
   ],
   providers: [
     { provide: APP_BASE_HREF, useValue: "/" },

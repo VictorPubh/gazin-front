@@ -14,6 +14,7 @@ import { CheckRequiredField } from "../_shared/helpers/form.helper";
 import { AuthService } from "../_auth/services/auth.service";
 import { PersonModel } from "../peoples/_models/person.model";
 import { PeoplesService } from "../peoples/_services/peoples.service";
+import { HOBBY } from "../hobbies/_models/hobby";
 
 @Component({
   selector: "app-sign-up",
@@ -23,6 +24,13 @@ import { PeoplesService } from "../peoples/_services/peoples.service";
 export class SignUpComponent implements OnInit {
   personForm: FormGroup;
   person: PersonModel;
+
+  limitSelection = false;
+  selHobbies: Array<HOBBY> = [];
+
+  disabled: Boolean = false;
+  ShowFilter: Boolean = true;
+  filedHobbies: Boolean = true;
 
   isProcessing: Boolean = false;
   error: Boolean = false;
@@ -34,16 +42,51 @@ export class SignUpComponent implements OnInit {
     },
   ];
 
+  dropdownSettings = {
+    singleSelection: false,
+    idField: "id",
+    textField: "name",
+    selectAllText: "Selecionar Todos",
+    unSelectAllText: "Desmarcar Todos",
+    searchPlaceholderText: "Procurar",
+    noDataAvailablePlaceholderText: "Nenhum hobby encontrado.",
+    enableCheckAll: false,
+    itemsShowLimit: 2,
+    allowSearchFilter: this.ShowFilter,
+  };
+
+  hobbies: HOBBY[];
+
   checkField = CheckRequiredField;
 
   constructor(
     private authService: AuthService,
     private router: Router,
-    private peoplesService: PeoplesService
+    private peoplesService: PeoplesService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit() {
     this.initForm();
+    this.hobbies = [
+      {
+        id: 1,
+        name: "Malhar",
+        categoryId: 1,
+      },
+      {
+        id: 2,
+        name: "Boxe",
+        categoryId: 1,
+      },
+    ];
+
+    this.filedHobbies = true;
+  }
+
+  onItemSelect(item: any) {
+    console.log("onItemSelect", item);
+    console.log("selHobbies", this.selHobbies);
   }
 
   async onSubmit($event) {
@@ -52,6 +95,8 @@ export class SignUpComponent implements OnInit {
   }
 
   private doAddPerson() {
+    console.log("addPerson value:", this.personForm.value);
+
     this.peoplesService.add(this.personForm.value).subscribe((person) => {
       this.personForm.reset();
       this.isProcessing = false;
@@ -69,6 +114,7 @@ export class SignUpComponent implements OnInit {
         Validators.required,
         Validators.email,
       ]),
+      hobbies: new FormControl([this.selHobbies]),
       password: new FormControl(this.person ? this.person.password : "", [
         Validators.required,
       ]),
