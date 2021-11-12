@@ -10,6 +10,7 @@ import { PeoplesListItemComponent } from "./peoples-list-item/peoples-list-item.
 import { PeoplesListComponent } from "./peoples-list/peoples-list.component";
 import { PeoplesComponent } from "./person.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
+import { NgMultiSelectDropDownModule } from "ng-multiselect-dropdown";
 
 const routes: Routes = [
   { path: "peoples", component: PeoplesComponent, canActivate: [AuthGuard] },
@@ -27,6 +28,7 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
     FontAwesomeModule,
+    NgMultiSelectDropDownModule,
   ],
   declarations: [
     PeoplesComponent,

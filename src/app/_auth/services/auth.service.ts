@@ -26,24 +26,21 @@ export class AuthService {
     this.resolveToken();
   }
 
-  validateTokenOnServer() {
-    return this.http
+  async validateTokenOnServer() {
+    return await this.http
       .post(environment["apiBaseUrl"] + "/auth/validate-token", {
-        jwt: this.token,
+        jwt: this.getToken(),
       })
       .pipe(
         map((data) => {
-          return data["user"] ? data["user"] : false;
+          return data["id"] ? data["id"] : false;
         }),
         tap((status) => {
           if (status) {
-            this.userData = status["user"];
-          }
-        }),
-        tap((status) => {
-          if (!status) {
+            this.userData = status["id"];
+          } else {
             this.isLoggedIn.next(false);
-            // localStorage.removeItem("token");
+            localStorage.removeItem("token");
           }
         }),
         catchError((err) => {

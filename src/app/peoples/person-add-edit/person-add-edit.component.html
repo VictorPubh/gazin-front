@@ -1,6 +1,9 @@
 <form [formGroup]="personForm">
-    <div class="form-group">
-        <label for="inputName" [ngClass]="{ required: checkField(personForm.get('name')) }">Nome <b>*</b></label
+  <div class="form-group">
+    <label
+      for="inputName"
+      [ngClass]="{ required: checkField(personForm.get('name')) }"
+      >Nome <b>*</b></label
     >
     <input
       type="text"
@@ -60,6 +63,25 @@
     </select>
   </div>
 
+  <div class="form-group" *ngIf="filedHobbies">
+    <label for="inputHobbies">Hobbies</label>
+    <ng-multiselect-dropdown
+      id="inputHobbies"
+      name="hobbies"
+      [ngClass]="{ required: checkField(personForm.get('hobbies')) }"
+      [placeholder]="'Selecione seus Hobbies'"
+      [settings]="dropdownSettings"
+      [data]="hobbies"
+      [(ngModel)]="selectedsHobbies"
+      formControlName="hobbies"
+      [ngModelOptions]="{ standalone: true }"
+      (onSelect)="onItemSelect($event)"
+      formControlName="hobbies"
+      ngDefaultControl
+    >
+    </ng-multiselect-dropdown>
+  </div>
+
   <div class="form-group">
     <label
       for="inputSex"
@@ -109,9 +131,12 @@
       <option
         *ngFor="let company of companies"
         value="{{ company.id }}"
+        [selected]="company?.id == person?.company?.id"
         selected
       >
         {{ company.name }}
+
+        <b *ngIf="company?.id == person?.company?.id">(Atualmente)</b>
       </option>
     </select>
   </div>

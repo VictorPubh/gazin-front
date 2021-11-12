@@ -14,7 +14,11 @@ import { CheckRequiredField } from "../_shared/helpers/form.helper";
 import { AuthService } from "../_auth/services/auth.service";
 import { PersonModel } from "../peoples/_models/person.model";
 import { PeoplesService } from "../peoples/_services/peoples.service";
-import { HOBBY } from "../hobbies/_models/hobby";
+import { HobbiesService } from "../peoples/_services/hobbies.service";
+import { BehaviorSubject } from "rxjs";
+import { HobbyModel } from "../peoples/_models/hobbies/hobby";
+import { ModelCompany } from "../company/_models";
+import { CompaniesService } from "../company/_services/companies.service";
 
 @Component({
   selector: "app-sign-up",
@@ -26,7 +30,7 @@ export class SignUpComponent implements OnInit {
   person: PersonModel;
 
   limitSelection = false;
-  selHobbies: Array<HOBBY> = [];
+  selHobbies: Array<HobbyModel> = [];
 
   disabled: Boolean = false;
   ShowFilter: Boolean = true;
@@ -35,13 +39,6 @@ export class SignUpComponent implements OnInit {
   isProcessing: Boolean = false;
   error: Boolean = false;
 
-  companies = [
-    {
-      name: "Gazin",
-      id: 1,
-    },
-  ];
-
   dropdownSettings = {
     singleSelection: false,
     idField: "id",
@@ -49,45 +46,49 @@ export class SignUpComponent implements OnInit {
     selectAllText: "Selecionar Todos",
     unSelectAllText: "Desmarcar Todos",
     searchPlaceholderText: "Procurar",
+    closeDropDownOnSelection: true,
     noDataAvailablePlaceholderText: "Nenhum hobby encontrado.",
     enableCheckAll: false,
     itemsShowLimit: 2,
     allowSearchFilter: this.ShowFilter,
   };
 
-  hobbies: HOBBY[];
+  hobbies$: BehaviorSubject<HobbyModel[]>;
+  hobbies: HobbyModel[];
 
+  companies$: BehaviorSubject<ModelCompany[]>;
+  companies: ModelCompany[];
   checkField = CheckRequiredField;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     private peoplesService: PeoplesService,
+    private readonly hobbiesService: HobbiesService,
+    private readonly companiesService: CompaniesService,
     private fb: FormBuilder
   ) {}
 
   ngOnInit() {
-    this.initForm();
+    this.hobbies$ = this.hobbiesService.hobbies$;
     this.hobbies = [
       {
-        id: 1,
-        name: "Malhar",
-        categoryId: 1,
+        id: 42,
+        name: "Programação",
       },
-      {
-        id: 2,
-        name: "Boxe",
-        categoryId: 1,
-      },
+      ...this.hobbies$.getValue(),
     ];
 
+    this.companies$ = this.companiesService.companies$;
+    this.companies = this.companies$.getValue();
+
+    console.log(this.companies);
+
     this.filedHobbies = true;
+    this.initForm();
   }
 
-  onItemSelect(item: any) {
-    console.log("onItemSelect", item);
-    console.log("selHobbies", this.selHobbies);
-  }
+  onItemSelect(item: any) {}
 
   async onSubmit($event) {
     this.isProcessing = true;

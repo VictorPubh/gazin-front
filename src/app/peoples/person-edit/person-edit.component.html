@@ -1,21 +1,25 @@
 <div class="container" *ngIf="readyView">
-    <div class="row" *ngIf="person">
-        <div class="col-12">
-            <h1 class="m-4">Editar Pessoa</h1>
+  <div class="row" *ngIf="person">
+    <div class="col-12">
+      <h1 class="m-4">Editar Pessoa</h1>
 
-            <app-person-add-edit [person]="person" [isEdit]="true" (formSubmitEvent)="formSubmitEvent($event)"></app-person-add-edit>
-            <a class="a-return m-2" routerLink="/peoples"> Voltar para Pessoas </a>
-        </div>
+      <app-person-add-edit
+        [person]="person"
+        [isEdit]="true"
+        (formSubmitEvent)="formSubmitEvent($event)"
+      ></app-person-add-edit>
+      <a class="a-return m-2" routerLink="/peoples"> Voltar para Pessoas </a>
     </div>
+  </div>
 
-    <div class="row" *ngIf="hasNoItem">
-        <div class="col-12">
-            <h1>Item não encontrado</h1>
+  <div class="row" *ngIf="hasNoItem">
+    <div class="col-12">
+      <h1 class="my-4">Item não encontrado</h1>
 
-            <p class="alert alert-danger" role="alert">
-                <strong>Error!</strong>
-                <br />Precisa alimentar! :P
-            </p>
-        </div>
+      <p class="alert alert-danger" role="alert">
+        <strong>Error!</strong>
+        <br />Precisa alimentar! :P
+      </p>
     </div>
+  </div>
 </div>

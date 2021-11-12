@@ -118,7 +118,7 @@ export class PersonEditComponent implements OnInit, OnDestroy {
       birthday: new FormControl(this.person ? this.person.birthday : "", [
         Validators.required,
       ]),
-      company: new FormControl(this.person ? this.person.companyId : null),
+      company: new FormControl(this.person ? this.person.companyId : 0),
     });
   }
 }

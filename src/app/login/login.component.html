@@ -1,13 +1,16 @@
 <div class="container">
-    <div class="flex">
-        <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
-        <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-            <div class="card card-signin my-5">
-                <div class="card-body">
-                    <h5 class="card-title text-center">Faça Login</h5>
-                    <form class="form-signin" [formGroup]="loginForm">
-                        <div class="form-group">
-                            <label for="inputEmail" [ngClass]="{ required: checkField(loginForm.get('email')) }">Email <b>(Required)</b></label
+  <div class="flex">
+    <img class="logotipo mx-auto mt-4" src="assets/jeitogazin.png" />
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card card-signin my-5">
+        <div class="card-body">
+          <h5 class="card-title text-center">Faça Login</h5>
+          <form class="form-signin" [formGroup]="loginForm">
+            <div class="form-group">
+              <label
+                for="inputEmail"
+                [ngClass]="{ required: checkField(loginForm.get('email')) }"
+                >Email <b>*</b></label
               >
               <input
                 type="email"
@@ -24,7 +27,7 @@
               <label
                 for="inputPassword"
                 [ngClass]="{ required: checkField(loginForm.get('password')) }"
-                >Senha <b>(Required)</b></label
+                >Senha <b>*</b></label
               >
               <input
                 type="password"

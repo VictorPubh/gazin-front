@@ -1,4 +1,4 @@
-import { HOBBY } from "src/app/hobbies/_models/hobby";
+import { HobbyModel } from "./hobbies/hobby";
 
 export interface PersonModel {
   id: number;
@@ -11,5 +11,5 @@ export interface PersonModel {
   createdAt: Date;
   birthday: Date;
   companyId?: number;
-  hobbies?: HOBBY[];
+  hobbies?: HobbyModel[];
 }
