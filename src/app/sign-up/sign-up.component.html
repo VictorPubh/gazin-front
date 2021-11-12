@@ -81,6 +81,21 @@
               </select>
             </div>
 
+            <div class="form-group" *ngIf="filedHobbies">
+              <label for="inputProfession">Hobbies</label>
+              <ng-multiselect-dropdown
+                name="hobbies"
+                [placeholder]="'Selecione seus Hobbies'"
+                [settings]="dropdownSettings"
+                [data]="hobbies"
+                [(ngModel)]="selHobbies"
+                formControlName="hobbies"
+                [disabled]="disabled"
+                (onSelect)="onItemSelect($event)"
+              >
+              </ng-multiselect-dropdown>
+            </div>
+
             <div class="form-group">
               <label
                 for="inputSex"

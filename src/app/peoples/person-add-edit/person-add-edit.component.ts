@@ -13,6 +13,10 @@ import { CheckRequiredField } from "../../_shared/helpers/form.helper";
 
 import { PeoplesService } from "../_services/peoples.service";
 import { PersonModel } from "../_models/person.model";
+import { HobbyModel } from "../_models/hobbies/hobby";
+import { ModelCompany } from "src/app/company/_models";
+import { CompaniesService } from "src/app/company/_services/companies.service";
+import { HobbiesService } from "../_services/hobbies.service";
 
 @Component({
   selector: "app-person-add-edit",
@@ -27,21 +31,55 @@ export class PersonAddEditComponent implements OnInit {
   personForm: FormGroup;
 
   isProcessing: Boolean = false;
+  filedHobbies: Boolean = false;
 
-  companies = [
-    {
-      name: "Gazin",
-      id: 1,
-    },
-  ];
+  hobbies$: BehaviorSubject<HobbyModel[]>;
+  hobbies: HobbyModel[];
+  selectedsHobbies: HobbyModel[];
+
+  companies$: BehaviorSubject<ModelCompany[]>;
+  companies: ModelCompany[];
+
+  dropdownSettings = {
+    singleSelection: false,
+    idField: "id",
+    textField: "name",
+    selectAllText: "Selecionar Todos",
+    unSelectAllText: "Desmarcar Todos",
+    searchPlaceholderText: "Procurar",
+    closeDropDownOnSelection: true,
+    noDataAvailablePlaceholderText: "Nenhum hobby encontrado.",
+    enableCheckAll: false,
+    itemsShowLimit: 2,
+    allowSearchFilter: false,
+  };
 
   checkField = CheckRequiredField;
 
-  constructor(private peoplesService: PeoplesService) {}
+  constructor(
+    private readonly peoplesService: PeoplesService,
+    private readonly companiesService: CompaniesService,
+    private readonly hobbiesService: HobbiesService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.initForm();
+
+    await this.companiesService.fetch().subscribe(() => {
+      this.companies$ = this.companiesService.companies$;
+      this.companies = this.companies$.getValue();
+      this.selectedsHobbies = this.person?.hobbies;
+    });
+
+    await this.hobbiesService.fetch().subscribe(() => {
+      this.hobbies$ = this.hobbiesService.hobbies$;
+      this.hobbies = this.hobbies$.getValue();
+    });
+
+    this.filedHobbies = true;
   }
+
+  onItemSelect(item: any) {}
 
   onSubmit($event) {
     this.isProcessing = true;
@@ -53,6 +91,10 @@ export class PersonAddEditComponent implements OnInit {
         this.doUpdatePerson();
       }
     }
+
+    console.log(this.personForm.value);
+
+    this.peoplesService.fetch().subscribe();
   }
 
   getButtonText(): string {
@@ -82,6 +124,7 @@ export class PersonAddEditComponent implements OnInit {
   private reset() {
     this.person = null;
     this.personForm.reset();
+
     this.initForm();
   }
 
@@ -97,6 +140,7 @@ export class PersonAddEditComponent implements OnInit {
         email: new FormControl(this.person ? this.person.email : "", [
           Validators.email,
         ]),
+        hobbies: new FormControl(this.person ? this.selectedsHobbies : []),
         profession: new FormControl(
           this.person ? this.person.profession : "Developer",
           [Validators.required]
@@ -118,6 +162,7 @@ export class PersonAddEditComponent implements OnInit {
         password: new FormControl(this.person ? this.person.password : "", [
           Validators.required,
         ]),
+        hobbies: new FormControl(this.person ? this.selectedsHobbies : []),
         profession: new FormControl(
           this.person ? this.person.profession : "Developer",
           [Validators.required]
@@ -125,9 +170,10 @@ export class PersonAddEditComponent implements OnInit {
         sex: new FormControl(this.person ? this.person.sex : "", [
           Validators.required,
         ]),
-        birthday: new FormControl(this.person ? this.person.birthday : "", [
-          Validators.required,
-        ]),
+        birthday: new FormControl(
+          this.person ? new Date(this.person.birthday).toISOString() : "",
+          [Validators.required]
+        ),
         company: new FormControl(this.person ? this.person.companyId : null),
       });
     }

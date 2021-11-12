@@ -5,6 +5,8 @@ import { DOCUMENT } from "@angular/common";
 
 import { AuthService } from "./_auth/services/auth.service";
 import { PeoplesService } from "./peoples/_services/peoples.service";
+import { HobbiesService } from "./peoples/_services/hobbies.service";
+import { CompaniesService } from "./company/_services/companies.service";
 
 @Component({
   selector: "app-root",
@@ -19,7 +21,9 @@ export class AppComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     @Inject(DOCUMENT) private document: any,
-    private peoplesService: PeoplesService
+    private readonly peoplesService: PeoplesService,
+    private readonly hobbiesService: HobbiesService,
+    private readonly companiesService: CompaniesService
   ) {}
 
   ngOnInit() {
@@ -37,14 +41,17 @@ export class AppComponent implements OnInit, OnDestroy {
       }
     );
 
+    this.hobbiesService.fetch().subscribe();
+    this.companiesService.fetch().subscribe();
+
     // Check and validate token
-    if (this.authService.hasToken()) {
-      this.authService.validateTokenOnServer().subscribe((result) => {
-        if (!result) {
-          this.logout();
-        }
-      });
-    }
+    // if (this.authService.hasToken()) {
+    //   this.authService.validateTokenOnServer().subscribe((result) => {
+    //     if (!result) {
+    //       this.logout();
+    //     }
+    //   });
+    // }
   }
 
   ngOnDestroy() {

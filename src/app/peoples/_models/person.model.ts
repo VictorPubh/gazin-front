@@ -1,3 +1,5 @@
+import { HobbyModel } from "./hobbies/hobby";
+
 export interface PersonModel {
   id: number;
   name: string;
@@ -9,4 +11,5 @@ export interface PersonModel {
   createdAt: Date;
   birthday: Date;
   companyId?: number;
+  hobbies?: HobbyModel[];
 }

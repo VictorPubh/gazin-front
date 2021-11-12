@@ -11,3 +11,17 @@
 .col-md-6 p {
   margin: 2px;
 }
+
+.flex {
+  display: flex;
+}
+
+.tag {
+  padding: 2px 15px;
+  background-color: #343a40;
+  border-radius: 5px;
+  margin: 0 2.5px;
+  color: white;
+  font-weight: bold;
+  font-size: 13px;
+}

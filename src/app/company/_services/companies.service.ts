@@ -8,35 +8,32 @@ import {
 import { Observable, Subject, throwError, of, BehaviorSubject } from "rxjs";
 import { map, mergeMap, switchMap, catchError, tap } from "rxjs/operators";
 
-import { PersonModel } from "../_models/person.model";
-import { UpdatePersonModel } from "../_models/update-person.model";
-
 import { Router } from "@angular/router";
-import { AddPersonModel } from "../_models/add-person.model";
+import { ModelCompany } from "../_models";
 
 @Injectable({
   providedIn: "root",
 })
-export class PeoplesService {
-  // Create a BehaviourSubject Observable with type PersonModel[] and default value []
-  peoples$ = new BehaviorSubject<PersonModel[]>([]);
+export class CompaniesService {
+  // Create a BehaviourSubject Observable with type HobbyModel[] and default value []
+  companies$ = new BehaviorSubject<ModelCompany[]>([]);
 
   constructor(private http: HttpClient, private router: Router) {}
 
   clear(): void {
-    this.peoples$.next([]);
+    this.companies$.next([]);
   }
 
-  getAll(): PersonModel[] {
-    return this.peoples$.getValue();
+  getAll(): ModelCompany[] {
+    return this.companies$.getValue();
   }
 
   getToken(): string {
     return localStorage.getItem("token");
   }
 
-  get(id: number): PersonModel {
-    const currentItems: PersonModel[] = this.getAll();
+  get(id: number): ModelCompany {
+    const currentItems: ModelCompany[] = this.getAll();
     if (currentItems.length === 0) {
       return null;
     }
@@ -51,19 +48,19 @@ export class PeoplesService {
 
   delete(id: number): Observable<any> {
     return this.http
-      .delete(environment["apiBaseUrl"] + "/person/" + id, {
+      .delete(environment["apiBaseUrl"] + "/company/" + id, {
         headers: new HttpHeaders().set(
           "Authorization",
           `Bearer ${this.getToken()}`
         ),
       })
       .pipe(
-        map((person) => {
-          return person["success"] ? true : false;
+        map((company) => {
+          return company["id"] ? true : false;
         }),
         tap((success) => {
           if (success) {
-            this.deletePerson(id);
+            this.deleteCompany(id);
           }
         }), // when success, delete the item from the local service
         catchError((err) => {
@@ -72,10 +69,10 @@ export class PeoplesService {
       );
   }
 
-  fetchPerson(id: number): Observable<any> {
-    return this.http.get(environment["apiBaseUrl"] + "/person/" + id).pipe(
-      map((person) => {
-        return person["id"] ? person : false;
+  fetchCompany(id: number): Observable<any> {
+    return this.http.get(environment["apiBaseUrl"] + "/company/" + id).pipe(
+      map((company) => {
+        return company["id"] ? company : false;
       }),
       catchError((err) => {
         return of(false);
@@ -83,21 +80,21 @@ export class PeoplesService {
     );
   }
 
-  update(id: number, payload: UpdatePersonModel): Observable<any> {
+  update(id: number, payload: ModelCompany): Observable<any> {
     return this.http
-      .put(environment["apiBaseUrl"] + "/person/" + id, payload, {
+      .put(environment["apiBaseUrl"] + "/company/" + id, payload, {
         headers: new HttpHeaders().set(
           "Authorization",
           `Bearer ${this.getToken()}`
         ),
       })
       .pipe(
-        map((person) => {
-          return person["id"] ? person : false;
+        map((company) => {
+          return company["id"] ? company : false;
         }),
-        tap((person: PersonModel) => {
-          if (person) {
-            this.updatePerson(id, person);
+        tap((company: ModelCompany) => {
+          if (company) {
+            this.updateCompany(id, company);
           }
         }), // when success result, update the item in the local service
         catchError((err) => {
@@ -106,14 +103,14 @@ export class PeoplesService {
       );
   }
 
-  add(payload: AddPersonModel): Observable<any> {
-    return this.http.post(environment["apiBaseUrl"] + "/person", payload).pipe(
-      map((person) => {
-        return person["id"] ? person : false;
+  add(payload: ModelCompany): Observable<any> {
+    return this.http.post(environment["apiBaseUrl"] + "/company", payload).pipe(
+      map((company) => {
+        return company["id"] ? company : false;
       }),
-      tap((person: PersonModel) => {
-        if (person) {
-          this.addPerson(person);
+      tap((company: ModelCompany) => {
+        if (company) {
+          this.addCompany(company);
         }
       }), // when success, add the item to the local service
       catchError((err) => {
@@ -122,15 +119,15 @@ export class PeoplesService {
     );
   }
 
-  deletePerson(id: number): boolean {
-    const currentItems: PersonModel[] = this.getAll();
+  deleteCompany(id: number): boolean {
+    const currentItems: ModelCompany[] = this.getAll();
     if (currentItems.length > 0) {
       const indexOne = currentItems.findIndex((element) => {
         return element.id === id;
       });
       if (indexOne >= 0) {
         currentItems.splice(indexOne, 1);
-        this.peoples$.next(currentItems);
+        this.companies$.next(currentItems);
         return true;
       }
     }
@@ -138,22 +135,22 @@ export class PeoplesService {
     return false;
   }
 
-  addPerson(person: PersonModel): void {
-    const currentItems: PersonModel[] = this.getAll();
-    currentItems.push(person);
-    this.peoples$.next(currentItems);
+  addCompany(company: ModelCompany): void {
+    const currentItems: ModelCompany[] = this.getAll();
+    currentItems.push(company);
+    this.companies$.next(currentItems);
   }
 
-  updatePerson(id: number, person: PersonModel): boolean {
-    const currentItems: PersonModel[] = this.getAll();
+  updateCompany(id: number, company: ModelCompany): boolean {
+    const currentItems: ModelCompany[] = this.getAll();
     if (currentItems.length > 0) {
       const indexOne = currentItems.findIndex((element) => {
         return element.id === id;
       });
       if (indexOne >= 0) {
-        currentItems[indexOne] = person;
-        this.peoples$.next(currentItems);
-        this.router.navigate(["/peoples"]);
+        currentItems[indexOne] = company;
+        this.companies$.next(currentItems);
+        this.router.navigate(["/company"]);
         return true;
       }
     }
@@ -164,13 +161,13 @@ export class PeoplesService {
   fetch(): Observable<any> {
     this.clear();
 
-    return this.http.get(environment["apiBaseUrl"] + "/person").pipe(
+    return this.http.get(environment["apiBaseUrl"] + "/company").pipe(
       map((data) => {
         return data ? data : [];
       }),
-      tap((peoples: PersonModel[]) => {
-        if (peoples.length > 0) {
-          this.peoples$.next(peoples);
+      tap((companies: ModelCompany[]) => {
+        if (companies.length > 0) {
+          this.companies$.next(companies);
         }
       }),
       catchError((err) => {
